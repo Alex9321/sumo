@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Tue May 10 22:55:15 2016 by SUMO duarouter Version 0.25.0
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/duarouterConfiguration.xsd">
+
+    <input>
+        <net-file value="src/zorilor/data/zorilor.net.xml"/>
+        <trip-files value="src/zorilor/data/trips.xml"/>
+    </input>
+
+    <output>
+        <output-file value="src/zorilor/data/trip_result.rou.xml"/>
+    </output>
+
+</configuration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <vehicle id="0" depart="0.00">
+        <routeDistribution last="0">
+            <route cost="63.15" probability="1.00000000" edges="23893226 -7932203#1 -7932203#0 10510909#1 10510909#2 -8028548 7927518"/>
+        </routeDistribution>
+    </vehicle>
+    <vehicle id="1" depart="0.00">
+        <routeDistribution last="0">
+            <route cost="63.44" probability="1.00000000" edges="-7927518 8028548 10510909#3 10510909#4 10510909#0 7932203#0 7932203#1 -23893226"/>
+        </routeDistribution>
+    </vehicle>
+    <vehicle id="2" depart="0.00">
+        <routeDistribution last="0">
+            <route cost="14.86" probability="1.00000000" edges="55557174 10510909#2 10510909#3 10510908#0"/>
+        </routeDistribution>
+    </vehicle>
+    <vehicle id="3" depart="0.00">
+        <routeDistribution last="0">
+            <route cost="14.87" probability="1.00000000" edges="-10510908#0 10510909#4 10510909#0 10510909#1 -55557174"/>
+        </routeDistribution>
+    </vehicle>
+</routes>

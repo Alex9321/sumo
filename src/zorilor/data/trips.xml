@@ -1,0 +1,6 @@
+<trips>
+    <trip id="0" depart="0" from="23893226" to="7927518"/>
+    <trip id="1" depart="0" from="-7927518" to="-23893226"/>
+    <trip id="2" depart="0" from="55557174" to="10510908#0"/>
+    <trip id="3" depart="0" from="-10510908#0" to="-55557174"/>
+</trips>

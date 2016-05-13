@@ -1,0 +1,27 @@
+<routes>
+        <vType accel="1.0" decel="5.0" id="Car" length="7.0" color="1,0,0" maxSpeed="100.0" sigma="0.0"/>
+        <route id="r0" edges="23893226 -7932203#1 -7932203#0 10510909#1 10510909#2 -8028548 7927518"/>
+        <route id="r1" edges="-7927518 8028548 10510909#3 10510909#4 10510909#0 7932203#0 7932203#1 -23893226"/>
+        <route id="r2" edges="55557174 10510909#2 10510909#3 10510908#0"/>
+        <route id="r3" edges="-10510908#0 10510909#4 10510909#0 10510909#1 -55557174"/>
+    <vehicle depart="0" departLane="0" id="veh0" route="r0" type="Car"/>
+    <vehicle depart="1" departLane="0" id="veh1" route="r3" type="Car"/>
+    <vehicle depart="2" departLane="0" id="veh2" route="r3" type="Car"/>
+    <vehicle depart="3" departLane="0" id="veh3" route="r0" type="Car"/>
+    <vehicle depart="4" departLane="0" id="veh4" route="r3" type="Car"/>
+    <vehicle depart="5" departLane="1" id="veh5" route="r2" type="Car"/>
+    <vehicle depart="6" departLane="0" id="veh6" route="r0" type="Car"/>
+    <vehicle depart="7" departLane="0" id="veh7" route="r3" type="Car"/>
+    <vehicle depart="8" departLane="0" id="veh8" route="r1" type="Car"/>
+    <vehicle depart="9" departLane="0" id="veh9" route="r0" type="Car"/>
+    <vehicle depart="10" departLane="0" id="veh10" route="r0" type="Car"/>
+    <vehicle depart="11" departLane="0" id="veh11" route="r1" type="Car"/>
+    <vehicle depart="12" departLane="1" id="veh12" route="r2" type="Car"/>
+    <vehicle depart="13" departLane="1" id="veh13" route="r3" type="Car"/>
+    <vehicle depart="14" departLane="0" id="veh14" route="r2" type="Car"/>
+    <vehicle depart="15" departLane="0" id="veh15" route="r0" type="Car"/>
+    <vehicle depart="16" departLane="1" id="veh16" route="r2" type="Car"/>
+    <vehicle depart="17" departLane="0" id="veh17" route="r1" type="Car"/>
+    <vehicle depart="18" departLane="0" id="veh18" route="r2" type="Car"/>
+    <vehicle depart="19" departLane="0" id="veh19" route="r1" type="Car"/>
+</routes>
