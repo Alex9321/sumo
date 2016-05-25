@@ -1,0 +1,14 @@
+<additional>
+    <inductionLoop id="a0" lane="8028548_0" pos="-100" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="a1" lane="-8028548_0" pos="100" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="b0" lane="7932203#0_0" pos="100" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="b1" lane="-7932203#0_0" pos="-100" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="c0_l0" lane="55557174_0" pos="-100" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="c0_l1" lane="55557174_1" pos="-100" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="c1_l0" lane="-55557174_0" pos="100" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="c1_l1" lane="-55557174_1" pos="100" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="d0_l0" lane="10510908#0_0" pos="100" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="d0_l1" lane="10510908#0_1" pos="100" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="d1_l0" lane="-10510908#0_0" pos="-100" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="d1_l1" lane="-10510908#0_1" pos="-100" freq="90" file="zorilor.out" friendlyPos="x"/>
+</additional>

@@ -46,13 +46,34 @@ PORT = 8873
 
 
 def run():
-    """execute the TraCI control loop"""
+    # create_random_routes()
 
-    # we start with phase 2 where EW has green
-    # traci.trafficlights.setPhase("0", 2)
-    # client_socket = socket.socket()
-    # client_socket.connect(('127.0.0.1', 9999))
+    client_socket = socket.socket()
+    client_socket.connect(('127.0.0.1', 9999))
 
+    traci.init(PORT)
+    step = 0
+
+    while traci.simulation.getMinExpectedNumber() > 0:
+        spatialPosition = traci.simulation.convert2D(traci.vehicle.getRoadID("veh0"), traci.vehicle.getLanePosition("veh0"), 0, False)
+        geoPosition = traci.simulation.convertGeo(spatialPosition[0], spatialPosition[1], False)
+        client_socket.send(str(geoPosition[1]) + "," + str(geoPosition[0]) + "\r\n")
+        traci.simulationStep()
+        step += 1
+        sleep(0.2)
+    traci.close()
+    client_socket.close()
+    sys.stdout.flush()
+
+
+def get_options():
+    optParser = optparse.OptionParser()
+    optParser.add_option("--nogui", action="store_true", default=False, help="run the commandline version of sumo")
+    options, args = optParser.parse_args()
+    return options
+
+
+def create_random_routes():
     with open("data/zorilor.rou.xml", "w") as routes:
         print >> routes, """<routes>
         <vType accel="1.0" decel="5.0" id="Car" length="7.0" color="1,0,0" maxSpeed="100.0" sigma="0.0"/>
@@ -69,45 +90,12 @@ def run():
                 i, lane, i, routeId)
         print >> routes, "</routes>"
 
-    traci.init(PORT)
-    step = 0
 
-    while traci.simulation.getMinExpectedNumber() > 0:
-        if traci.vehicle.getRoadID("veh0") != "":
-            spatialPosition = traci.simulation.convert2D(traci.vehicle.getRoadID("veh0"),
-                                                         traci.vehicle.getLanePosition("veh0"), laneIndex=0,
-                                                         toGeo=False)
-            sumoPosition = traci.vehicle.getPosition("veh0")
-            geoPosition = traci.simulation.convertGeo(spatialPosition[0], spatialPosition[1], fromGeo=False)
-        # client_socket.send(str(geoPosition[0]) + "," + str(geoPosition[1]) + "\r\n")
-        traci.simulationStep()
-        step += 1
-        sleep(0.2)
-    traci.close()
-    # client_socket.close()
-    sys.stdout.flush()
-
-
-def get_options():
-    optParser = optparse.OptionParser()
-    optParser.add_option("--nogui", action="store_true", default=False, help="run the commandline version of sumo")
-    options, args = optParser.parse_args()
-    return options
-
-
-# this is the main entry point of this script
 if __name__ == "__main__":
     options = get_options()
-
-    # this script has been called from the command line. It will start sumo as a
-    # server, then connect and run
     # sumoBinary = checkBinary('sumo')
     sumoBinary = checkBinary('sumo-gui')
 
-# first, generate the route file for this simulation
-
-# this is the normal way of using traci. sumo is started as a
-# subprocess and then the python script connects and runs
 sumoProcess = subprocess.Popen([sumoBinary, "-c", "data/zorilor.sumocfg", "--tripinfo-output",
                                 "tripinfo.xml", "--remote-port", str(PORT)], stdout=sys.stdout, stderr=sys.stderr)
 run()
