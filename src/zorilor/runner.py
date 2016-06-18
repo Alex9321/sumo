@@ -62,8 +62,8 @@ def send_data_to_rsu(client_socket, cars_in_perimeter):
 def run():
     create_random_routes()
 
-    client_socket = socket.socket()
-    client_socket.connect(('127.0.0.1', 9999))
+    # client_socket = socket.socket()
+    # client_socket.connect(('127.0.0.1', 9999))
 
     traci.init(PORT)
     step = 0
@@ -71,12 +71,12 @@ def run():
 
     while traci.simulation.getMinExpectedNumber() > 0:
         manage_car_set(cars_in_perimeter)
-        send_data_to_rsu(client_socket, cars_in_perimeter)
+        # send_data_to_rsu(client_socket, cars_in_perimeter)
         traci.simulationStep()
         step += 1
-        # sleep(0.2)
+        sleep(0.1)
     traci.close()
-    client_socket.close()
+    # client_socket.close()
     sys.stdout.flush()
 
 
@@ -109,28 +109,39 @@ def get_options():
     return options
 
 
-def create_random_routes():
+def create_car_model():
     with open("data/zorilor.rou.xml", "w") as routes:
         print >> routes, """<routes>
-    <vType accel="1.0" decel="5.0" id="Car" length="7.0" color="1,0,0" maxSpeed="100.0" sigma="0.0"/>
-    <route id="r0" edges="23893226 -7932203#1 -7932203#0 10510909#1 10510909#2 -8028548 7927518"/>
-    <route id="r1" edges="-7927518 8028548 10510909#3 10510909#4 10510909#0 7932203#0 7932203#1 -23893226"/>
+    <vType accel="3.0" decel="3.0" id="model1" length="7.0" color="1,0,0" maxSpeed="60.0" sigma="0.0"/>
+    <vType accel="2.0" decel="2.5" id="model2" length="7.0" color="1,0,0" maxSpeed="60.0" sigma="0.0"/>
+    <vType accel="2.5" decel="5.0" id="model3" length="7.0" color="1,0,0" maxSpeed="60.0" sigma="0.0"/>
+    <vType accel="1.5" decel="4.0" id="model4" length="7.0" color="1,0,0" maxSpeed="60.0" sigma="0.0"/>"""
+
+
+
+def create_random_routes():
+    create_car_model()
+    with open("data/zorilor.rou.xml", "a") as routes:
+        print >> routes, """
+    <route id="r0" edges="23893226#0 23893226#1 -7932203#1 -7932203#0 10510909#1 10510909#2 -8028548 7927518"/>
+    <route id="r1" edges="-7927518 8028548 10510909#3 10510909#4 10510909#0 7932203#0 7932203#1 -23893226#1 -23893226#0"/>
     <route id="r2" edges="55557174 10510909#2 10510909#3 10510908#0"/>
     <route id="r3" edges="-10510908#0 10510909#4 10510909#0 10510909#1 -55557174"/>"""
-        for i in range(10):
-            routeId = random.randint(0, 3)
+        for i in range(20):
+            route_id = random.randint(0, 3)
+            car_id = random.randint(1, 4)
             lane = 0
-            if (routeId != 0) & (routeId != 1):
+            if (route_id != 0) & (route_id != 1):
                 lane = random.randint(0, 1)
-            print >> routes, '    <vehicle depart="%i" departLane="%i" id="veh%i" route="r%i" type="Car"/>' % (
-                i * 2, lane, i, routeId)
+            print >> routes, '    <vehicle depart="%i" departLane="%i" id="veh%i" route="r%i" type="model%i"/>' % (
+                i * 2, lane, i, route_id, car_id)
         print >> routes, "</routes>"
 
 
 if __name__ == "__main__":
     options = get_options()
-    sumoBinary = checkBinary('sumo')
-    # sumoBinary = checkBinary('sumo-gui')
+    # sumoBinary = checkBinary('sumo')
+    sumoBinary = checkBinary('sumo-gui')
 
 sumoProcess = subprocess.Popen([sumoBinary, "-c", "data/zorilor.sumocfg", "--tripinfo-output", "tripinfo.xml", "--remote-port", str(PORT)], stdout=sys.stdout, stderr=sys.stderr)
 run()

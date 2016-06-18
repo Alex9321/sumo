@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on Sun May 29 14:25:07 2016 by SUMO Version 0.25.0
+<!-- generated on Sat Jun 18 15:46:10 2016 by SUMO gui Version 0.25.0
 <?xml version="1.0" encoding="UTF-8"?>
 
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumo-gui.exeConfiguration.xsd">
 
     <input>
         <net-file value="data/zorilor.net.xml"/>
@@ -30,3 +30,16 @@
     </traci_server>
 
 </configuration>
+-->
+
+<tripinfos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/tripinfo_file.xsd">
+    <tripinfo id="veh0" depart="0.00" departLane="-10510908#0_1" departPos="7.10" departSpeed="0.00" departDelay="0.00" arrival="31.00" arrivalLane="-55557174_0" arrivalPos="212.37" arrivalSpeed="27.78" duration="31.00" routeLength="425.93" waitSteps="0" timeLoss="15.24" rerouteNo="0" devices="tripinfo_veh0" vType="model2" vaporized=""/>
+    <tripinfo id="veh2" depart="4.00" departLane="55557174_1" departPos="7.10" departSpeed="0.00" departDelay="0.00" arrival="36.00" arrivalLane="10510908#0_0" arrivalPos="194.01" arrivalSpeed="26.23" duration="32.00" routeLength="416.06" waitSteps="0" timeLoss="16.34" rerouteNo="0" devices="tripinfo_veh2" vType="model4" vaporized=""/>
+    <tripinfo id="veh3" depart="8.00" departLane="55557174_1" departPos="7.10" departSpeed="0.00" departDelay="2.00" arrival="37.00" arrivalLane="10510908#0_0" arrivalPos="194.01" arrivalSpeed="27.23" duration="29.00" routeLength="416.06" waitSteps="0" timeLoss="13.64" rerouteNo="0" devices="tripinfo_veh3" vType="model3" vaporized=""/>
+    <tripinfo id="veh5" depart="11.00" departLane="55557174_1" departPos="7.10" departSpeed="0.00" departDelay="1.00" arrival="39.00" arrivalLane="10510908#0_0" arrivalPos="194.01" arrivalSpeed="27.78" duration="28.00" routeLength="416.06" waitSteps="0" timeLoss="12.55" rerouteNo="0" devices="tripinfo_veh5" vType="model3" vaporized=""/>
+    <tripinfo id="veh7" depart="14.00" departLane="-10510908#0_0" departPos="7.10" departSpeed="0.00" departDelay="0.00" arrival="45.00" arrivalLane="-55557174_0" arrivalPos="212.37" arrivalSpeed="27.04" duration="31.00" routeLength="425.93" waitSteps="0" timeLoss="15.63" rerouteNo="0" devices="tripinfo_veh7" vType="model4" vaporized=""/>
+    <tripinfo id="veh8" depart="16.00" departLane="-10510908#0_0" departPos="7.10" departSpeed="0.00" departDelay="0.00" arrival="47.00" arrivalLane="-55557174_0" arrivalPos="212.37" arrivalSpeed="27.78" duration="31.00" routeLength="425.93" waitSteps="0" timeLoss="14.99" rerouteNo="0" devices="tripinfo_veh8" vType="model3" vaporized=""/>
+    <tripinfo id="veh9" depart="18.00" departLane="55557174_0" departPos="7.10" departSpeed="0.00" departDelay="0.00" arrival="55.00" arrivalLane="10510908#0_0" arrivalPos="194.01" arrivalSpeed="25.27" duration="37.00" routeLength="416.06" waitSteps="0" timeLoss="21.14" rerouteNo="0" devices="tripinfo_veh9" vType="model4" vaporized=""/>
+    <tripinfo id="veh13" depart="26.00" departLane="-10510908#0_0" departPos="7.10" departSpeed="0.00" departDelay="0.00" arrival="57.00" arrivalLane="-55557174_0" arrivalPos="212.37" arrivalSpeed="27.78" duration="31.00" routeLength="425.93" waitSteps="0" timeLoss="15.24" rerouteNo="0" devices="tripinfo_veh13" vType="model2" vaporized=""/>
+    <tripinfo id="veh4" depart="8.00" departLane="23893226#0_0" departPos="7.10" departSpeed="0.00" departDelay="0.00" arrival="81.00" arrivalLane="7927518_0" arrivalPos="193.91" arrivalSpeed="13.89" duration="73.00" routeLength="832.61" waitSteps="0" timeLoss="7.09" rerouteNo="0" devices="tripinfo_veh4" vType="model3" vaporized=""/>
+</tripinfos>
