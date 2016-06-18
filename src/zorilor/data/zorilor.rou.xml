@@ -1,17 +1,31 @@
 <routes>
-    <vType accel="1.0" decel="5.0" id="Car" length="7.0" color="1,0,0" maxSpeed="100.0" sigma="0.0"/>
-    <route id="r0" edges="23893226 -7932203#1 -7932203#0 10510909#1 10510909#2 -8028548 7927518"/>
-    <route id="r1" edges="-7927518 8028548 10510909#3 10510909#4 10510909#0 7932203#0 7932203#1 -23893226"/>
+    <vType accel="3.0" decel="3.0" id="model1" length="7.0" color="1,0,0" maxSpeed="60.0" sigma="0.0"/>
+    <vType accel="2.0" decel="2.5" id="model2" length="7.0" color="1,0,0" maxSpeed="60.0" sigma="0.0"/>
+    <vType accel="2.5" decel="5.0" id="model3" length="7.0" color="1,0,0" maxSpeed="60.0" sigma="0.0"/>
+    <vType accel="1.5" decel="4.0" id="model4" length="7.0" color="1,0,0" maxSpeed="60.0" sigma="0.0"/>
+
+    <route id="r0" edges="23893226#0 23893226#1 -7932203#1 -7932203#0 10510909#1 10510909#2 -8028548 7927518"/>
+    <route id="r1" edges="-7927518 8028548 10510909#3 10510909#4 10510909#0 7932203#0 7932203#1 -23893226#1 -23893226#0"/>
     <route id="r2" edges="55557174 10510909#2 10510909#3 10510908#0"/>
     <route id="r3" edges="-10510908#0 10510909#4 10510909#0 10510909#1 -55557174"/>
-    <vehicle depart="0" departLane="0" id="veh0" route="r3" type="Car"/>
-    <vehicle depart="2" departLane="0" id="veh1" route="r2" type="Car"/>
-    <vehicle depart="4" departLane="1" id="veh2" route="r3" type="Car"/>
-    <vehicle depart="6" departLane="1" id="veh3" route="r3" type="Car"/>
-    <vehicle depart="8" departLane="1" id="veh4" route="r3" type="Car"/>
-    <vehicle depart="10" departLane="0" id="veh5" route="r3" type="Car"/>
-    <vehicle depart="12" departLane="0" id="veh6" route="r0" type="Car"/>
-    <vehicle depart="14" departLane="1" id="veh7" route="r3" type="Car"/>
-    <vehicle depart="16" departLane="0" id="veh8" route="r1" type="Car"/>
-    <vehicle depart="18" departLane="0" id="veh9" route="r2" type="Car"/>
+    <vehicle depart="0" departLane="1" id="veh0" route="r3" type="model2"/>
+    <vehicle depart="2" departLane="0" id="veh1" route="r1" type="model2"/>
+    <vehicle depart="4" departLane="1" id="veh2" route="r2" type="model4"/>
+    <vehicle depart="6" departLane="1" id="veh3" route="r2" type="model3"/>
+    <vehicle depart="8" departLane="0" id="veh4" route="r0" type="model3"/>
+    <vehicle depart="10" departLane="1" id="veh5" route="r2" type="model3"/>
+    <vehicle depart="12" departLane="0" id="veh6" route="r1" type="model3"/>
+    <vehicle depart="14" departLane="0" id="veh7" route="r3" type="model4"/>
+    <vehicle depart="16" departLane="0" id="veh8" route="r3" type="model3"/>
+    <vehicle depart="18" departLane="0" id="veh9" route="r2" type="model4"/>
+    <vehicle depart="20" departLane="0" id="veh10" route="r0" type="model2"/>
+    <vehicle depart="22" departLane="0" id="veh11" route="r2" type="model1"/>
+    <vehicle depart="24" departLane="0" id="veh12" route="r1" type="model1"/>
+    <vehicle depart="26" departLane="0" id="veh13" route="r3" type="model2"/>
+    <vehicle depart="28" departLane="0" id="veh14" route="r2" type="model3"/>
+    <vehicle depart="30" departLane="0" id="veh15" route="r1" type="model2"/>
+    <vehicle depart="32" departLane="0" id="veh16" route="r0" type="model3"/>
+    <vehicle depart="34" departLane="0" id="veh17" route="r0" type="model3"/>
+    <vehicle depart="36" departLane="0" id="veh18" route="r0" type="model2"/>
+    <vehicle depart="38" departLane="0" id="veh19" route="r1" type="model2"/>
 </routes>
