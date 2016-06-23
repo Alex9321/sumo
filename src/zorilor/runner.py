@@ -59,10 +59,14 @@ def send_data_to_rsu(client_socket, cars_in_perimeter):
         data['speed'] = traci.vehicle.getSpeed(veh_id)
         data['acceleration'] = traci.vehicle.getAccel(veh_id)
         client_socket.send(json.dumps(data) + "\n")
+        message = client_socket.recv(1024).splitlines()[0]
+        if message != "Nu":
+            print message
+            traci.vehicle.setStop(message, traci.vehicle.getRoadID(message), 105, 0, 10)
 
 
 def run():
-    # create_random_routes()
+    create_random_routes()
 
     client_socket = socket.socket()
     client_socket.connect(('127.0.0.1', 9999))
@@ -76,15 +80,15 @@ def run():
         send_data_to_rsu(client_socket, cars_in_perimeter)
         traci.simulationStep()
         step += 1
-        # sleep(0.1)
+        sleep(0.3)
     traci.close()
     client_socket.close()
-    sys.stdout.flush()
+    # sys.stdout.flush()
 
 
 def manage_car_set(car_set):
     manage_car_set_lane(car_set, "a")
-    # manage_car_set_lane(car_set, "b")
+    manage_car_set_lane(car_set, "b")
 
 
 def manage_car_set_lane(car_set, lane):
@@ -94,8 +98,9 @@ def manage_car_set_lane(car_set, lane):
     vehicles_ids_exiting = traci.inductionloop.traci.inductionloop.getLastStepVehicleIDs(lane + "_end")
     if number_of_vehicles_entered > 0:
         for i in range(len(vehicles_ids_entered)):
-            # if traci.vehicle.getRouteID(vehicles_ids_entered[i]) == "r0":
-            #     traci.vehicle.setSpeedMode(vehicles_ids_entered[i], 0)
+            # if (random.uniform(0, 1) > 0.5) and (traci.vehicle.getRouteID(vehicles_ids_entered[i]) == "r0"):
+            if traci.vehicle.getRouteID(vehicles_ids_entered[i]) == "r0":
+                traci.vehicle.setSpeedMode(vehicles_ids_entered[i], 0)
             car_set.add(vehicles_ids_entered[i])
     if number_of_vehicles_exiting > 0:
         for i in range(len(vehicles_ids_exiting)):
@@ -104,45 +109,20 @@ def manage_car_set_lane(car_set, lane):
 
 def get_options():
     optParser = optparse.OptionParser()
-    optParser.add_option("--nogui", action="store_true", default=False, help="run the commandline version of sumo")
+    optParser.add_option("--nogui", "store_true", False, "run the commandline version of sumo")
     options, args = optParser.parse_args()
     return options
 
 
-# def create_car_model():
-#     with open("data/zorilor.rou.xml", "w") as routes:
-#         print >> routes, """<routes>
-#     <vType accel="7.0" decel="2.0" id="model1" length="7.0" color="1,0,0" maxSpeed="60.0" sigma="0.0"/>
-#     <vType accel="7.0" decel="2.5" id="model2" length="7.0" color="1,0,0" maxSpeed="60.0" sigma="0.0"/>
-#     <vType accel="7.5" decel="1.5" id="model3" length="7.0" color="1,0,0" maxSpeed="60.0" sigma="0.0"/>"""
-#
-#
-# def create_random_routes():
-#     create_car_model()
-#     with open("data/zorilor.rou.xml", "a") as routes:
-#         print >> routes, """
-#     <route id="r0" edges="7926735#0 7926735#1 55557174"/>
-#     <route id="r1" edges="289919844#0 289919844#1 289919844#2 55557174"/>"""
-#         for i in range(10):
-#             route_id = 1
-#             car_id = random.randint(1, 3)
-#             lane = random.randint(0, 1)
-#             print >> routes, '    <vehicle depart="%i" departLane="%i" id="veh%i" route="r%i" type="model%i"/>' % (
-#                 i * 6, lane, i, route_id, car_id)
-#         for i in range(10):
-#             route_id = 0
-#             car_id = random.randint(1, 3)
-#             lane = 0
-#             print >> routes, '    <vehicle depart="%i" departLane="%i" id="veh%i" route="r%i" type="model%i"/>' % (
-#                 i * 15 + 60, lane, i + 10, route_id, car_id)
-#         print >> routes, "</routes>"
-
 def create_car_model():
     with open("data/zorilor.rou.xml", "w") as routes:
-        print >> routes, """<routes>
-    <vType accel="5.0" decel="2.0" id="model1" length="7.0" color="1,0,0" maxSpeed="60.0" sigma="0.0"/>
-    <vType accel="3.0" decel="2.5" id="model2" length="7.0" color="1,0,0" maxSpeed="45.0" sigma="0.0"/>
-    <vType accel="4.0" decel="1.5" id="model3" length="7.0" color="1,0,0" maxSpeed="53.0" sigma="0.0"/>"""
+        print >> routes, '<routes>'
+        for i in range(10):
+            vehicle_accel = random.uniform(3, 5)
+            vehicle_decel = random.uniform(1.5, 2.5)
+            vehicle_max_speed = random.uniform(17, 20)
+            print >> routes, '<vType accel="%f" decel="%f" id="model%i" length="7.0" color="1,0,0" maxSpeed="%f" sigma="0.0"/>' % (
+                vehicle_accel, vehicle_decel, i, vehicle_max_speed)
 
 
 def create_random_routes():
@@ -152,19 +132,21 @@ def create_random_routes():
     <route id="r0" edges="-46331812 31649598#0 31649598#1"/>
     <route id="r1" edges="-31581244#0 46331812"/>
     <route id="r2" edges="-31649598#1 -31649598#0 31581244#0"/>"""
+        depart = 0
         for i in range(20):
             route_id = random.randint(0, 1)
-            car_id = random.randint(1, 3)
+            car_id = random.randint(0, 9)
+            depart = random.randint(depart, depart + 10)
             lane = 0
-            print >> routes, '    <vehicle depart="%i" departLane="%i" id="veh%i" route="r%i" type="model%i"/>' % (
-                i * 2, lane, i, route_id, car_id)
+            print >> routes, '<vehicle depart="%i" departLane="%i" id="veh%i" route="r%i" type="model%i"/>' % (
+                depart, lane, i, route_id, car_id)
         print >> routes, "</routes>"
 
 
 if __name__ == "__main__":
-    options = get_options()
-    sumoBinary = checkBinary('sumo')
-    # sumoBinary = checkBinary('sumo-gui')
+    # options = get_options()
+    # sumoBinary = checkBinary('sumo')
+    sumoBinary = checkBinary('sumo-gui')
 
 sumoProcess = subprocess.Popen([sumoBinary, "-c", "data/zorilor.sumocfg", "--tripinfo-output", "tripinfo.xml", "--remote-port", str(PORT)], stdout=sys.stdout, stderr=sys.stderr)
 run()

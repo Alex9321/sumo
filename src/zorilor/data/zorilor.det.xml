@@ -1,6 +1,6 @@
 <additional>
-    <inductionLoop id="a_start" lane="-46331812_0" pos="-50" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="a_start" lane="-46331812_0" pos="-150" freq="90" file="zorilor.out" friendlyPos="x"/>
     <inductionLoop id="a_end" lane="31649598#0_0" pos="50" freq="90" file="zorilor.out" friendlyPos="x"/>
-    <!--<inductionLoop id="b_start" lane="-31581244#0_0" pos="50" freq="90" file="zorilor.out" friendlyPos="x"/>-->
-    <!--<inductionLoop id="b_end" lane="46331812_0" pos="50" freq="90" file="zorilor.out" friendlyPos="x"/>-->
+    <inductionLoop id="b_start" lane="-31581244#0_0" pos="10" freq="90" file="zorilor.out" friendlyPos="x"/>
+    <inductionLoop id="b_end" lane="46331812_0" pos="50" freq="90" file="zorilor.out" friendlyPos="x"/>
 </additional>

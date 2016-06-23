@@ -1947,7 +1947,7 @@
         <lane id="-46018132_0" index="0" disallow="tram rail_urban rail rail_electric ship" speed="13.89" length="295.99" shape="482.07,297.95 513.09,309.71 517.02,311.20 536.66,318.65 548.76,323.24 564.35,329.14 579.48,334.89 584.01,339.92 588.88,345.34 607.00,365.50 583.05,468.71 580.79,478.21 572.72,512.19"/>
     </edge>
     <edge id="-46331812" from="292024254" to="292022382" priority="4" type="highway.residential" shape="895.77,281.78 953.04,298.75 1050.03,328.66 1062.64,327.10">
-        <lane id="-46331812_0" index="0" disallow="tram rail_urban rail rail_electric ship" speed="30.33" length="172.91" shape="900.32,281.41 953.52,297.17 1050.18,326.98 1066.33,324.99"/>
+        <lane id="-46331812_0" index="0" disallow="tram rail_urban rail rail_electric ship" speed="40.0" length="172.91" shape="900.32,281.41 953.52,297.17 1050.18,326.98 1066.33,324.99"/>
     </edge>
     <edge id="-47806443#0" from="1805096901" to="258979040" priority="4" type="highway.residential" shape="1240.31,454.26 1213.18,482.52 1209.13,499.49">
         <lane id="-47806443#0_0" index="0" disallow="tram rail_urban rail rail_electric ship" speed="20.33" length="42.90" shape="1238.30,458.74 1214.68,483.34 1212.64,491.90"/>
@@ -2241,10 +2241,10 @@
         <lane id="31581244#1_0" index="0" disallow="tram rail_urban rail rail_electric ship" speed="20.33" length="282.25" shape="1065.83,233.13 1010.17,139.34 1002.70,129.59 991.95,124.03 981.09,119.56 850.33,78.48"/>
     </edge>
     <edge id="31649598#0" from="292022382" to="1805096627" priority="4" type="highway.residential">
-        <lane id="31649598#0_0" index="0" disallow="tram rail_urban rail rail_electric ship" speed="20.33" length="70.62" shape="1071.68,327.88 1139.77,346.62"/>
+        <lane id="31649598#0_0" index="0" disallow="tram rail_urban rail rail_electric ship" speed="40.0" length="70.62" shape="1071.68,327.88 1139.77,346.62"/>
     </edge>
     <edge id="31649598#1" from="1805096627" to="292020320" priority="4" type="highway.residential">
-        <lane id="31649598#1_0" index="0" disallow="tram rail_urban rail rail_electric ship" speed="20.33" length="146.86" shape="1148.89,349.22 1289.85,390.45"/>
+        <lane id="31649598#1_0" index="0" disallow="tram rail_urban rail rail_electric ship" speed="40.00" length="146.86" shape="1148.89,349.22 1289.85,390.45"/>
     </edge>
     <edge id="31649598#2" from="292020320" to="292020686" priority="4" type="highway.residential">
         <lane id="31649598#2_0" index="0" disallow="tram rail_urban rail rail_electric ship" speed="20.33" length="21.85" shape="1300.32,393.42 1321.36,399.31"/>
