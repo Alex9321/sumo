@@ -48,12 +48,22 @@ PORT = 8873
 accident_cars = set()
 
 
+# def create_accident(veh_id):
+#     if (veh_id in accident_cars) and (traci.vehicle.getLanePosition > 20) and (traci.vehicle.getLanePosition(veh_id) < 85):
+#         traci.vehicle.setSpeedMode(veh_id, 0)
+#         traci.vehicle.setSpeed(veh_id, traci.vehicle.getMaxSpeed(veh_id))
+#     else:
+#         traci.vehicle.setSpeedMode(veh_id, 31)
+
+
 def create_accident(veh_id):
-    if (veh_id in accident_cars) and (traci.vehicle.getLanePosition > 20) and (traci.vehicle.getLanePosition(veh_id) < 85):
+    if (traci.vehicle.getRouteID(veh_id) == "r0") and (traci.vehicle.getLanePosition > 20) and (traci.vehicle.getLanePosition(veh_id) < 85):
         traci.vehicle.setSpeedMode(veh_id, 0)
         traci.vehicle.setSpeed(veh_id, traci.vehicle.getMaxSpeed(veh_id))
     else:
         traci.vehicle.setSpeedMode(veh_id, 31)
+
+
 
 
 def send_data_to_rsu(client_socket, cars_in_perimeter):
@@ -70,14 +80,14 @@ def send_data_to_rsu(client_socket, cars_in_perimeter):
         data['speed'] = traci.vehicle.getSpeed(veh_id)
         data['acceleration'] = traci.vehicle.getAccel(veh_id)
         client_socket.send(json.dumps(data) + "\n")
-        # message = client_socket.recv(1024).splitlines()[0]
-        # if message != "Nu":
-        #     print message
-        #     traci.vehicle.setStop(message, traci.vehicle.getRoadID(message), 109, 0, 300)
+        message = client_socket.recv(1024).splitlines()[0]
+        if message != "Nu":
+            print message
+            traci.vehicle.setStop(message, traci.vehicle.getRoadID(message), 109, 0, 300)
 
 
 def run():
-    create_simulation_scenario()
+    # create_simulation_scenario()
     client_socket = socket.socket()
     client_socket.connect(('127.0.0.1', 9999))
     traci.init(PORT)
@@ -92,7 +102,7 @@ def run():
         send_data_to_rsu(client_socket, cars_in_perimeter)
         traci.simulationStep()
         step += 1
-        # sleep(0.1)
+        sleep(0.2)
     traci.close()
     client_socket.close()
 
@@ -113,13 +123,6 @@ def manage_car_set_lane(car_set, lane):
     if number_of_vehicles_exiting > 0:
         for i in range(len(vehicles_ids_exiting)):
             car_set.discard(vehicles_ids_exiting[i])
-
-
-def get_options():
-    optParser = optparse.OptionParser()
-    optParser.add_option("--nogui", "store_true", False, "run the commandline version of sumo")
-    options, args = optParser.parse_args()
-    return options
 
 
 def create_car_model():
@@ -156,9 +159,8 @@ def create_simulation_scenario():
 
 
 if __name__ == "__main__":
-    # options = get_options()
-    sumoBinary = checkBinary('sumo')
-    # sumoBinary = checkBinary('sumo-gui')
+    # sumoBinary = checkBinary('sumo')
+    sumoBinary = checkBinary('sumo-gui')
 
 sumoProcess = subprocess.Popen([sumoBinary, "-c", "data/zorilor.sumocfg", "--tripinfo-output", "tripinfo.xml", "--remote-port", str(PORT)], stdout=sys.stdout, stderr=sys.stderr)
 run()
