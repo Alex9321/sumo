@@ -1,0 +1,18 @@
+<routes>
+    <vType accel="3.940241" decel="2.339409" id="model0" length="7.0" color="1,0,0" maxSpeed="19.014017" sigma="0.0"/>
+    <vType accel="4.132794" decel="2.267025" id="model1" length="7.0" color="1,0,0" maxSpeed="18.873059" sigma="0.0"/>
+    <vType accel="4.875425" decel="2.338034" id="model2" length="7.0" color="1,0,0" maxSpeed="17.945353" sigma="0.0"/>
+    <vType accel="4.963191" decel="1.675029" id="model3" length="7.0" color="1,0,0" maxSpeed="17.223602" sigma="0.0"/>
+    <vType accel="4.487674" decel="2.271850" id="model4" length="7.0" color="1,0,0" maxSpeed="17.438764" sigma="0.0"/>
+    <vType accel="3.390265" decel="2.086859" id="model5" length="7.0" color="1,0,0" maxSpeed="18.101135" sigma="0.0"/>
+    <vType accel="4.376191" decel="2.321738" id="model6" length="7.0" color="1,0,0" maxSpeed="18.668494" sigma="0.0"/>
+    <vType accel="3.785048" decel="1.634584" id="model7" length="7.0" color="1,0,0" maxSpeed="21.768449" sigma="0.0"/>
+    <vType accel="4.169983" decel="1.599253" id="model8" length="7.0" color="1,0,0" maxSpeed="18.550322" sigma="0.0"/>
+    <vType accel="4.712951" decel="2.239526" id="model9" length="7.0" color="1,0,0" maxSpeed="17.080305" sigma="0.0"/>
+
+    <route id="r0" edges="-46331812 31649598#0 31649598#1"/>
+    <route id="r1" edges="-31581244#0 46331812"/>
+    <route id="r2" edges="-31649598#1 -31649598#0 31581244#0"/>
+    <vehicle depart="0" departLane="0" id="veh1" route="r1" type="model7"/>
+    <vehicle depart="2" departLane="0" id="veh0" route="r0" type="model7"/>
+</routes>

@@ -45,9 +45,20 @@ from time import sleep
 # the port used for communicating with your sumo instance
 PORT = 8873
 
+accident_cars = set()
+
+
+def create_accident(veh_id):
+    if (veh_id in accident_cars) and (traci.vehicle.getLanePosition > 20) and (traci.vehicle.getLanePosition(veh_id) < 85):
+        traci.vehicle.setSpeedMode(veh_id, 0)
+        traci.vehicle.setSpeed(veh_id, traci.vehicle.getMaxSpeed(veh_id))
+    else:
+        traci.vehicle.setSpeedMode(veh_id, 31)
+
 
 def send_data_to_rsu(client_socket, cars_in_perimeter):
     for veh_id in cars_in_perimeter:
+        create_accident(veh_id)
         spatial_pos = traci.simulation.convert2D(traci.vehicle.getRoadID(veh_id), traci.vehicle.getLanePosition(veh_id), 0, False)
         geo_pos = traci.simulation.convertGeo(spatial_pos[0], spatial_pos[1], False)
         position = {}
@@ -59,31 +70,31 @@ def send_data_to_rsu(client_socket, cars_in_perimeter):
         data['speed'] = traci.vehicle.getSpeed(veh_id)
         data['acceleration'] = traci.vehicle.getAccel(veh_id)
         client_socket.send(json.dumps(data) + "\n")
-        message = client_socket.recv(1024).splitlines()[0]
-        if message != "Nu":
-            print message
-            traci.vehicle.setStop(message, traci.vehicle.getRoadID(message), 105, 0, 10)
+        # message = client_socket.recv(1024).splitlines()[0]
+        # if message != "Nu":
+        #     print message
+        #     traci.vehicle.setStop(message, traci.vehicle.getRoadID(message), 109, 0, 300)
 
 
 def run():
-    create_random_routes()
-
+    create_simulation_scenario()
     client_socket = socket.socket()
     client_socket.connect(('127.0.0.1', 9999))
-
     traci.init(PORT)
     step = 0
     cars_in_perimeter = set()
+    for i in range(200):
+        if random.uniform(0, 1) > 0.5:
+            accident_cars.add("veh" + str(i))
 
     while traci.simulation.getMinExpectedNumber() > 0:
         manage_car_set(cars_in_perimeter)
         send_data_to_rsu(client_socket, cars_in_perimeter)
         traci.simulationStep()
         step += 1
-        sleep(0.3)
+        # sleep(0.1)
     traci.close()
     client_socket.close()
-    # sys.stdout.flush()
 
 
 def manage_car_set(car_set):
@@ -98,9 +109,6 @@ def manage_car_set_lane(car_set, lane):
     vehicles_ids_exiting = traci.inductionloop.traci.inductionloop.getLastStepVehicleIDs(lane + "_end")
     if number_of_vehicles_entered > 0:
         for i in range(len(vehicles_ids_entered)):
-            # if (random.uniform(0, 1) > 0.5) and (traci.vehicle.getRouteID(vehicles_ids_entered[i]) == "r0"):
-            if traci.vehicle.getRouteID(vehicles_ids_entered[i]) == "r0":
-                traci.vehicle.setSpeedMode(vehicles_ids_entered[i], 0)
             car_set.add(vehicles_ids_entered[i])
     if number_of_vehicles_exiting > 0:
         for i in range(len(vehicles_ids_exiting)):
@@ -117,15 +125,15 @@ def get_options():
 def create_car_model():
     with open("data/zorilor.rou.xml", "w") as routes:
         print >> routes, '<routes>'
-        for i in range(10):
-            vehicle_accel = random.uniform(3, 5)
-            vehicle_decel = random.uniform(1.5, 2.5)
-            vehicle_max_speed = random.uniform(17, 20)
+        for i in range(200):
+            vehicle_accel = random.uniform(10, 15)
+            vehicle_decel = random.uniform(1.5, 2.0)
+            vehicle_max_speed = random.uniform(18, 22)
             print >> routes, '<vType accel="%f" decel="%f" id="model%i" length="7.0" color="1,0,0" maxSpeed="%f" sigma="0.0"/>' % (
                 vehicle_accel, vehicle_decel, i, vehicle_max_speed)
 
 
-def create_random_routes():
+def create_simulation_scenario():
     create_car_model()
     with open("data/zorilor.rou.xml", "a") as routes:
         print >> routes, """
@@ -133,20 +141,24 @@ def create_random_routes():
     <route id="r1" edges="-31581244#0 46331812"/>
     <route id="r2" edges="-31649598#1 -31649598#0 31581244#0"/>"""
         depart = 0
-        for i in range(20):
-            route_id = random.randint(0, 1)
-            car_id = random.randint(0, 9)
-            depart = random.randint(depart, depart + 10)
-            lane = 0
-            print >> routes, '<vehicle depart="%i" departLane="%i" id="veh%i" route="r%i" type="model%i"/>' % (
-                depart, lane, i, route_id, car_id)
+        depart_r0 = 0
+        for i in range(30):
+            route_id = 0
+            car_id = random.randint(0, 199)
+            depart_r0 += 1
+            depart += 15
+            # if depart_r0 == 20:
+            #     route_id = 0
+            #     depart_r0 = 0
+            print >> routes, '<vehicle depart="%i" departLane="0" id="veh%i" route="r%i" type="model%i"/>' % (
+                depart, i, route_id, car_id)
         print >> routes, "</routes>"
 
 
 if __name__ == "__main__":
     # options = get_options()
-    # sumoBinary = checkBinary('sumo')
-    sumoBinary = checkBinary('sumo-gui')
+    sumoBinary = checkBinary('sumo')
+    # sumoBinary = checkBinary('sumo-gui')
 
 sumoProcess = subprocess.Popen([sumoBinary, "-c", "data/zorilor.sumocfg", "--tripinfo-output", "tripinfo.xml", "--remote-port", str(PORT)], stdout=sys.stdout, stderr=sys.stderr)
 run()
