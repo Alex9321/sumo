@@ -1,0 +1,9 @@
+<routes>
+    <vType accel="3.785048" decel="1.634584" id="model7" length="7.0" color="1,0,0" maxSpeed="19.768449" sigma="0.0"/>
+    <vType accel="4.169983" decel="10.599253" id="model8" length="7.0" color="1,0,0" maxSpeed="30.550322" sigma="0.0"/>
+
+    <route id="r0" edges="-46331812 31649598#0 31649598#1"/>
+    <route id="r1" edges="-31581244#0 46331812"/>
+    <vehicle depart="2" departLane="0" id="veh0" route="r0" type="model7"/>
+    <vehicle depart="6" departLane="0" id="veh1" route="r1" type="model8"/>
+</routes>
