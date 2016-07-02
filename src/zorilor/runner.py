@@ -22,7 +22,6 @@ the Free Software Foundation; either version 3 of the License, or
 
 import os
 import sys
-import optparse
 import subprocess
 import socket
 import random
@@ -48,16 +47,16 @@ PORT = 8873
 accident_cars = set()
 
 
-# def create_accident(veh_id):
-#     if (veh_id in accident_cars) and (traci.vehicle.getLanePosition > 20) and (traci.vehicle.getLanePosition(veh_id) < 85):
-#         traci.vehicle.setSpeedMode(veh_id, 0)
-#         traci.vehicle.setSpeed(veh_id, traci.vehicle.getMaxSpeed(veh_id))
-#     else:
-#         traci.vehicle.setSpeedMode(veh_id, 31)
+def random_accident(veh_id):
+    if (traci.vehicle.getLanePosition > 20) and (traci.vehicle.getLanePosition(veh_id) < end_distance):
+        traci.vehicle.setSpeedMode(veh_id, 0)
+        traci.vehicle.setSpeed(veh_id, traci.vehicle.getMaxSpeed(veh_id))
+    else:
+        traci.vehicle.setSpeedMode(veh_id, 31)
 
 
 def create_accident(veh_id):
-    if (traci.vehicle.getRouteID(veh_id) == "r0") and (traci.vehicle.getLanePosition > 20) and (traci.vehicle.getLanePosition(veh_id) < 70):
+    if (traci.vehicle.getRouteID(veh_id) == "r0") and (traci.vehicle.getLanePosition > 20) and (traci.vehicle.getLanePosition(veh_id) < end_distance):
         traci.vehicle.setSpeedMode(veh_id, 0)
         traci.vehicle.setSpeed(veh_id, traci.vehicle.getMaxSpeed(veh_id))
     else:
@@ -66,7 +65,10 @@ def create_accident(veh_id):
 
 def send_data_to_rsu(client_socket, cars_in_perimeter):
     for veh_id in cars_in_perimeter:
-        # create_accident(veh_id)
+        if mode == "train":
+            random_accident(veh_id)
+        else:
+            create_accident(veh_id)
         spatial_pos = traci.simulation.convert2D(traci.vehicle.getRoadID(veh_id), traci.vehicle.getLanePosition(veh_id), 0, False)
         geo_pos = traci.simulation.convertGeo(spatial_pos[0], spatial_pos[1], False)
         position = {}
@@ -78,29 +80,41 @@ def send_data_to_rsu(client_socket, cars_in_perimeter):
         data['speed'] = traci.vehicle.getSpeed(veh_id)
         data['acceleration'] = traci.vehicle.getAccel(veh_id)
         client_socket.send(json.dumps(data) + "\n")
-        message = client_socket.recv(1024).splitlines()[0]
-        if message != "Safe":
-            print message
-            traci.vehicle.setStop(message, traci.vehicle.getRoadID(message), 85, 0, 300)
+        if mode == "run" and avoid == "1":
+            message = client_socket.recv(1024).splitlines()[0]
+            if message != "Safe":
+                print message
+                if scenario == "meteor":
+                    stop = 109
+                else:
+                    stop = 85
+                traci.vehicle.setStop(message, traci.vehicle.getRoadID(message), stop, 0, 300)
 
 
 def run():
-    # create_simulation_scenario()
+    create_simulation_scenario()
+    if mode == "train":
+        for i in range(200):
+            if random.uniform(0, 1) > 0.5:
+                accident_cars.add("veh" + str(i))
+
     client_socket = socket.socket()
     client_socket.connect(('127.0.0.1', 9999))
     traci.init(PORT)
     step = 0
-    cars_in_perimeter = set()
-    for i in range(200):
-        if random.uniform(0, 1) > 0.5:
-            accident_cars.add("veh" + str(i))
 
+    client_socket.send(scenario + "," + mode + "," + time + "\n")
+    message = client_socket.recv(1024).splitlines()[0]
+    print message
+
+    cars_in_perimeter = set()
     while traci.simulation.getMinExpectedNumber() > 0:
         manage_car_set(cars_in_perimeter)
         send_data_to_rsu(client_socket, cars_in_perimeter)
         traci.simulationStep()
         step += 1
-        sleep(0.2)
+        if mode == "run":
+            sleep(0.2)
     traci.close()
     client_socket.close()
 
@@ -124,7 +138,7 @@ def manage_car_set_lane(car_set, lane):
 
 
 def create_car_model():
-    with open("data/zorilor.rou.xml", "w") as routes:
+    with open(scenario + "/data/zorilor.rou.xml", "w") as routes:
         print >> routes, '<routes>'
         for i in range(200):
             vehicle_accel = random.uniform(10, 15)
@@ -135,31 +149,49 @@ def create_car_model():
 
 
 def create_simulation_scenario():
-    create_car_model()
-    with open("data/zorilor.rou.xml", "a") as routes:
-        print >> routes, """
-    <route id="r0" edges="7926735#0 7926639#0"/>
-    <route id="r1" edges="-7926735#1 7926639#0"/>"""
-        depart = 0
-        depart_r0 = 0
-        for i in range(200):
-            # route_id = random.randint(0,1)
-            route_id = 0
-            car_id = random.randint(0, 199)
-            depart_r0 += 1
-            depart += 15
-            # if depart_r0 == 20:
-            #     route_id = 0
-            #     depart_r0 = 0
-            print >> routes, '<vehicle depart="%i" departLane="0" id="veh%i" route="r%i" type="model%i"/>' % (
-                depart, i, route_id, car_id)
-        print >> routes, "</routes>"
+    if mode == "run":
+        with open(scenario + "/data/accident.xml") as accident:
+            lines = accident.readlines()
+            with open(scenario + "/data/zorilor.rou.xml", "w") as f1:
+                f1.writelines(lines)
+    else:
+        create_car_model()
+        with open(scenario + "/data/zorilor.rou.xml", "a") as routes:
+            if scenario == "rapsodiei":
+                print >> routes, """
+        <route id="r0" edges="7926735#0 7926639#0"/>
+        <route id="r1" edges="-7926735#1 7926639#0"/>"""
+            else:
+                print >> routes, """
+        <route id="r0" edges="-46331812 31649598#0 31649598#1"/>
+        <route id="r1" edges="-31581244#0 46331812"/>"""
+            depart = 0
+            for i in range(20):
+                route_id = 0
+                car_id = random.randint(0, 199)
+                depart += 15
+                print >> routes, '<vehicle depart="%i" departLane="0" id="veh%i" route="r%i" type="model%i"/>' % (
+                    depart, i, route_id, car_id)
+            print >> routes, "</routes>"
 
+
+scenario = (sys.argv[1])
+mode = (sys.argv[2])
+time = (sys.argv[3])
+avoid = (sys.argv[4])
 
 if __name__ == "__main__":
-    # sumoBinary = checkBinary('sumo')
-    sumoBinary = checkBinary('sumo-gui')
+    if mode == "train":
+        sumoBinary = checkBinary('sumo')
+    else:
+        sumoBinary = checkBinary('sumo-gui')
 
-sumoProcess = subprocess.Popen([sumoBinary, "-c", "data/zorilor.sumocfg", "--tripinfo-output", "tripinfo.xml", "--remote-port", str(PORT)], stdout=sys.stdout, stderr=sys.stderr)
+if scenario == "meteor":
+    end_distance = 85
+else:
+    end_distance = 70
+
+sumoProcess = subprocess.Popen([sumoBinary, "-c", scenario + "/data/zorilor.sumocfg", "--tripinfo-output", "tripinfo.xml", "--remote-port", str(PORT)], stdout=sys.stdout,
+                               stderr=sys.stderr)
 run()
 sumoProcess.kill()

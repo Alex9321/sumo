@@ -1,3 +1,6 @@
 .idea/
 *.out
 .DS_STORE
+src/zorilor/rapsodiei/tripinfo.xml
+src/zorilor/meteor/tripinfo.xml
+src/zorilor/tripinfo.xml
