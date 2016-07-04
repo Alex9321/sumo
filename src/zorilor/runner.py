@@ -88,7 +88,7 @@ def send_data_to_rsu(client_socket, cars_in_perimeter):
                     stop = 109
                 else:
                     stop = 85
-                traci.vehicle.setStop(message, traci.vehicle.getRoadID(message), stop, 0, 300)
+                traci.vehicle.setStop(message, traci.vehicle.getRoadID(message), stop, 0, 1300)
 
 
 def run():
@@ -138,19 +138,34 @@ def manage_car_set_lane(car_set, lane):
 
 
 def create_car_model():
+    max_speed_first = 18
+    max_speed_last = 22
+    decel_min = 1.5
+    decel_max = 2.5
+
+    if time == "2":
+        max_speed_first = 22
+        max_speed_last = 26
+        decel_min = 2.7
+        decel_max = 3.7
+    if time == "3":
+        max_speed_first = 26
+        max_speed_last = 30
+        decel_min = 3.5
+        decel_max = 6
     with open(scenario + "/data/zorilor.rou.xml", "w") as routes:
         print >> routes, '<routes>'
         for i in range(200):
             vehicle_accel = random.uniform(10, 15)
-            vehicle_decel = random.uniform(1.5, 2.0)
-            vehicle_max_speed = random.uniform(18, 22)
+            vehicle_decel = random.uniform(decel_min, decel_max)
+            vehicle_max_speed = random.uniform(max_speed_first, max_speed_last)
             print >> routes, '<vType accel="%f" decel="%f" id="model%i" length="7.0" color="1,0,0" maxSpeed="%f" sigma="0.0"/>' % (
                 vehicle_accel, vehicle_decel, i, vehicle_max_speed)
 
 
 def create_simulation_scenario():
     if mode == "run":
-        with open(scenario + "/data/accident.xml") as accident:
+        with open(scenario + "/data/accident" + time + ".xml") as accident:
             lines = accident.readlines()
             with open(scenario + "/data/zorilor.rou.xml", "w") as f1:
                 f1.writelines(lines)
@@ -169,7 +184,7 @@ def create_simulation_scenario():
             for i in range(20):
                 route_id = 0
                 car_id = random.randint(0, 199)
-                depart += 15
+                depart += 20
                 print >> routes, '<vehicle depart="%i" departLane="0" id="veh%i" route="r%i" type="model%i"/>' % (
                     depart, i, route_id, car_id)
             print >> routes, "</routes>"
@@ -186,10 +201,17 @@ if __name__ == "__main__":
     else:
         sumoBinary = checkBinary('sumo-gui')
 
-if scenario == "meteor":
-    end_distance = 85
+
+if time == "3":
+    if scenario == "meteor":
+        end_distance = 120
+    else:
+        end_distance = 80
 else:
-    end_distance = 70
+    if scenario == "meteor":
+        end_distance = 85
+    else:
+        end_distance = 70
 
 sumoProcess = subprocess.Popen([sumoBinary, "-c", scenario + "/data/zorilor.sumocfg", "--tripinfo-output", "tripinfo.xml", "--remote-port", str(PORT)], stdout=sys.stdout,
                                stderr=sys.stderr)
