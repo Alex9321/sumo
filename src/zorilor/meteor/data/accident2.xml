@@ -1,5 +1,5 @@
 <routes>
-    <vType accel="3.785048" decel="3.334584" id="model7" length="7.0" color="1,0,0" maxSpeed="23.768449" sigma="0.0"/>
+    <vType accel="3.785048" decel="3.334584" id="model7" length="7.0" color="1,0,0" maxSpeed="24.768449" sigma="0.0"/>
     <vType accel="4.169983" decel="10.599253" id="model8" length="7.0" color="1,0,0" maxSpeed="30.550322" sigma="0.0"/>
 
     <route id="r0" edges="-46331812 31649598#0 31649598#1"/>
